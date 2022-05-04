@@ -157,7 +157,7 @@ def backwardPass(order):
     for node in reversed(order):
         if isinstance(node, Operator):
             grads = node.backward()
-            for operand, grad in zip(np.array(node.operands, ndmin=1), np.array(grads, ndmin=1)):
+            for operand, grad in zip(np.array(node.operands, ndmin=1, dtype=object), np.array(grads, ndmin=1, dtype=object)):
                 if operand not in vis:
                     operand.grad = grad
                 else:

@@ -13,6 +13,13 @@ class Graph():
         self.numLog = 0
         self.numSin = 0
         self.numCos = 0
+        self.numMax = 0
+        self.numMin = 0
+        self.numExp = 0
+        self.numSqrt = 0
+        self.numSinh = 0
+        self.numCosh = 0
+        self.numTanh = 0
     
     def clear(self):
         self.__init__()
