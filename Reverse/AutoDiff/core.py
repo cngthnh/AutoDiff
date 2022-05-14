@@ -15,7 +15,7 @@ class Node():
         self.name = None
 
     def __repr__(self):
-        return type(self).__name__ + '(' + str(self.name) + ', ' + str(self.value) + ')'
+        return type(self).__name__ + '(' + ', '.join([str(self.name), str(self.value), str(self.grad)]) + ')'
     
     def __str__(self):
         return str(self.__repr__())

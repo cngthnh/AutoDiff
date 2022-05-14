@@ -38,7 +38,7 @@ class Session():
     
     def reset(self):
         global _graphs
-        _graphs[self.id].clepythoar()
+        _graphs[self.id].clear()
 
     def close(self):
         global _graphs

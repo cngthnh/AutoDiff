@@ -1,4 +1,4 @@
-from ..core import Node, Operator, Session, Constant
+from ..core import Node, Operator, Session, Constant, nodeWrapper
 from .basic_operator import Power
 import numpy as np
 
@@ -136,41 +136,56 @@ class Tanh(Operator):
 
 # Class wrapper for advanced operators
 
-def log(x: Node, base = np.e):
+def log(x, base = np.e):
+    x = nodeWrapper(x)
     return Log(x, base)
 
-def log10(x: Node):
+def log10(x):
+    x = nodeWrapper(x)
     return Log(x, 10)
 
-def log2(x: Node):
+def log2(x):
+    x = nodeWrapper(x)
     return Log(x, 2)
 
-def sin(x: Node):
+def sin(x):
+    x = nodeWrapper(x)
     return Sin(x)
 
-def cos(x: Node):
+def cos(x):
+    x = nodeWrapper(x)
     return Cos(x)
 
-def tan(x: Node):
+def tan(x):
+    x = nodeWrapper(x)
     return Tan(x)
 
-def maximum(x: Node, y: Node):
+def maximum(x, y):
+    x = nodeWrapper(x)
+    y = nodeWrapper(y)
     return Max(x, y)
 
-def minimum(x: Node, y: Node):
+def minimum(x, y):
+    x = nodeWrapper(x)
+    y = nodeWrapper(y)
     return Min(x, y)
 
-def exp(x: Node):
+def exp(x):
+    x = nodeWrapper(x)
     return Exp(x)
 
-def sqrt(x: Node):
+def sqrt(x):
+    x = nodeWrapper(x)
     return Sqrt(x)
 
-def sinh(x: Node):
+def sinh(x):
+    x = nodeWrapper(x)
     return Sinh(x)
 
-def cosh(x: Node):
+def cosh(x):
+    x = nodeWrapper(x)
     return Cosh(x)
 
-def tanh(x: Node):
+def tanh(x):
+    x = nodeWrapper(x)
     return Tanh(x)

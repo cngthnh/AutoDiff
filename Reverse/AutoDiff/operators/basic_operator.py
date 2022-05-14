@@ -66,7 +66,7 @@ class Divide(Operator):
         self.value = self.operands[0].value / self.operands[1].value
     
     def backward(self):
-        result = [self.grad / self.operands[1].value, self.operands[0].value * self.grad / self.operands[1].value**2]
+        result = [self.grad / self.operands[1].value, -self.operands[0].value * self.grad / self.operands[1].value**2]
         if ((isinstance(self.operands[0], Variable) or isinstance(self.operands[0], Placeholder))
         and self.operands[0].T is not None 
         and self.operands[1] == self.operands[0].T):
@@ -87,12 +87,12 @@ class Power(Operator):
         if ((isinstance(self.operands[0], Variable) or isinstance(self.operands[0], Placeholder))
         and self.operands[0].T is not None 
         and self.operands[1] == self.operands[0].T):
-            return [self.operands[0] ** self.operands[1].value * (np.log(self.operands[0].value) + 1), self.operands[0] ** self.operands[1].value * (np.log(self.operands[0].value) + 1)]
+            return [self.operands[0] ** self.operands[1].value * (np.log(np.abs(self.operands[0].value)) + 1), self.operands[0] ** self.operands[1].value * (np.log(np.abs(self.operands[0].value)) + 1)]
         return [self.operands[1].value * self.grad * (self.operands[0].value ** (self.operands[1].value - 1)), 
-            (self.operands[0].value ** self.operands[1].value) * np.log(self.operands[0].value) * self.grad]
+            (self.operands[0].value ** self.operands[1].value) * np.log(np.abs(self.operands[0].value)) * self.grad]
 
 Node.__add__ = lambda self, other: Add(self, nodeWrapper(other))
-Node.__div__ = lambda self, other: Divide(self, nodeWrapper(other))
+Node.__truediv__ = lambda self, other: Divide(self, nodeWrapper(other))
 Node.__sub__ = lambda self, other: Add(self, Constant(-1) * nodeWrapper(other))
 Node.__mul__ = lambda self, other: Multiply(self, nodeWrapper(other))
 Node.__matmul__ = lambda self, other: Matmul(self, nodeWrapper(other))

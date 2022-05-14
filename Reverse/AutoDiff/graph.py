@@ -23,7 +23,3 @@ class Graph():
     
     def clear(self):
         self.__init__()
-    
-    def destroy(self):
-        for v in self.variables:
-            del v
