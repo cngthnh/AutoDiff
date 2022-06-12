@@ -20,6 +20,8 @@ class Graph():
         self.numSinh = 0
         self.numCosh = 0
         self.numTanh = 0
+        self.numDotProduct = 0
+        self.numSigmoid = 0
     
     def clear(self):
         self.__init__()

@@ -18,6 +18,8 @@ NAME_DICT = {
     'O::Cosh::': 'cosh [',
     'O::Tanh::': 'tanh [',
     'O::Sinh::': 'sinh [',
+    'O::Dot::': 'dot [',
+    'O::Sigmoid::': 'sigmoid [',
     '::': ' [',
 }
 
@@ -43,5 +45,8 @@ def drawGraph(node: Node):
             for edge in node.operands:
                 nodeLabel = labelWrapper(node.name)
                 edgeLabel = labelWrapper(edge.name)
-                g.edge(edgeLabel, nodeLabel, label=str("{:.4f}".format(edge.value)))
+                if (edge.value is not None):
+                    g.edge(edgeLabel, nodeLabel, label=str("{:.4f}".format(edge.value)))
+                else:
+                    g.edge(edgeLabel, nodeLabel)
     return g

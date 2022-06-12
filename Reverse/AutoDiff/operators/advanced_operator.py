@@ -134,6 +134,39 @@ class Tanh(Operator):
     def backward(self):
         return self.grad / (np.cosh(self.operands[0].value) ** 2)
 
+class DotProduct(Operator):
+    def __init__(self, operand1: Node, operand2: Node):
+        
+        super().__init__('O::Dot::' + str(Session.getGraph().numDotProduct))
+        self.operands = [operand1, operand2]
+        Session.getGraph().numDotProduct += 1
+    
+    def forward(self):
+        self.value = np.dot(self.operands[0].value, self.operands[1].value)
+    
+    def backward(self):
+        if (len(self.grad.shape) < len(self.operands[1].value.shape)):
+            self.grad = self.grad.reshape(self.grad.shape[0], 1)
+        return [np.dot(self.operands[1].value, self.grad.T), np.dot(self.grad.T, self.operands[0].value)]
+
+class Sigmoid(Operator):
+    def __init__(self, operand):
+        
+        super().__init__('O::Sigmoid::' + str(Session.getGraph().numSigmoid))
+        self.operands = [operand]
+        Session.getGraph().numSigmoid += 1
+    
+    def forward(self):
+        self.value = 1 / (1 + np.exp(-self.operands[0].value))
+    
+    def backward(self):
+        if (isinstance(self.grad, np.ndarray) and isinstance(self.operands[0].value, np.ndarray) and self.operands[0].value.shape != self.grad.shape):
+            grad = self.grad.reshape(self.operands[0].value.shape)
+        else:
+            grad = self.grad
+        value = self.operands[0].value
+        return [grad * np.exp(-value) / ((np.exp(-value) + 1) ** 2)]
+
 # Class wrapper for advanced operators
 
 def log(x, base = np.e):
@@ -189,3 +222,12 @@ def cosh(x):
 def tanh(x):
     x = nodeWrapper(x)
     return Tanh(x)
+
+def dot(x, y):
+    x = nodeWrapper(x)
+    y = nodeWrapper(y)
+    return DotProduct(x, y)
+
+def sigmoid(x):
+    x = nodeWrapper(x)
+    return Sigmoid(x)
